@@ -1,0 +1,80 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion 32
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    defaultConfig {
+        applicationId "ua.opu.continent"
+        minSdkVersion 21
+        targetSdkVersion 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
+    implementation "androidx.core:core-ktx:$rootProject.coreVersion"
+    implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
+    implementation "com.google.android.material:material:$rootProject.materialVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintlayoutVersion"
+    implementation "androidx.activity:activity-ktx:$rootProject.activityVersion"
+    implementation "androidx.legacy:legacy-support-v4:$rootProject.legacyVersion"
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.coreTestingVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoCoreVersion"
+
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesVersion"
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
+
+
+    implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navVersion"
+
+    implementation platform("com.google.firebase:firebase-bom:$rootProject.firebaseBomVersion")
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-messaging'
+
+    implementation "de.hdodenhof:circleimageview:$rootProject.circleimageVersion"
+    implementation "com.github.mukeshsolanki:android-otpview-pinview:$rootProject.otpviewVersion"
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+    implementation "com.github.pgreze:android-reactions:$rootProject.reactionsVersion"
+    implementation "com.devlomi:circularstatusview:$rootProject.circularstatusviewVersion"
+    implementation "com.github.OMARIHAMZA:StoryView:$rootProject.storyViewVersion"
+    implementation "com.github.sharish:ShimmerRecyclerView:$rootProject.shimmerRecyclerViewVersion"
+
+}
