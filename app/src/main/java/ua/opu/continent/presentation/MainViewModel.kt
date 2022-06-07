@@ -17,9 +17,9 @@ import ua.opu.continent.useсase.ChatsUseCase
 import ua.opu.continent.useсase.PresenceUseCase
 import ua.opu.continent.useсase.UsersUseCase
 import ua.opu.continent.useсase.impl.AuthenticationUseCaseFirebase
-import ua.opu.continent.useсase.impl.ChatsUseCaseImpl
-import ua.opu.continent.useсase.impl.PresenceUseCaseImpl
-import ua.opu.continent.useсase.impl.UsersUseCaseImpl
+import ua.opu.continent.useсase.impl.ChatsUseCaseFirebase
+import ua.opu.continent.useсase.impl.PresenceUseCaseFirebase
+import ua.opu.continent.useсase.impl.UsersUseCaseFirebase
 import ua.opu.continent.useсase.logging.AuthenticationUserCaseLog
 import ua.opu.continent.useсase.logging.ChatsUserCaseLog
 import ua.opu.continent.useсase.logging.PresenceUserCaseLog
@@ -28,10 +28,10 @@ import ua.opu.continent.useсase.logging.UsersUserCaseLog
 class MainViewModel() : ViewModel() {
     private var authUseCaseFirebase: AuthenticationUseCase =
         AuthenticationUserCaseLog(AuthenticationUseCaseFirebase(), TAG_FOR_LOGS)
-    private var userUseCase: UsersUseCase = UsersUserCaseLog(UsersUseCaseImpl(), TAG_FOR_LOGS)
-    private var chatsUseCase: ChatsUseCase = ChatsUserCaseLog(ChatsUseCaseImpl(), TAG_FOR_LOGS)
+    private var userUseCase: UsersUseCase = UsersUserCaseLog(UsersUseCaseFirebase(), TAG_FOR_LOGS)
+    private var chatsUseCase: ChatsUseCase = ChatsUserCaseLog(ChatsUseCaseFirebase(), TAG_FOR_LOGS)
     private var presenceUseCase: PresenceUseCase =
-        PresenceUserCaseLog(PresenceUseCaseImpl(), TAG_FOR_LOGS)
+        PresenceUserCaseLog(PresenceUseCaseFirebase(), TAG_FOR_LOGS)
 
     fun isAuthenticateUser(): Boolean = runBlocking {
         authUseCaseFirebase.isAuthenticateUser()

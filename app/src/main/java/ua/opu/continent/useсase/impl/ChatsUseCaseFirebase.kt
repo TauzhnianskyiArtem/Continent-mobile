@@ -12,7 +12,7 @@ import ua.opu.continent.presentation.dto.MessageCreateDto
 import ua.opu.continent.useсase.ChatsUseCase
 import java.util.*
 
-class ChatsUseCaseImpl : ChatsUseCase {
+class ChatsUseCaseFirebase : ChatsUseCase {
 
     private val chatsRepository: ChatsRepository = ChatsRepository()
     private var storage: FirebaseStorage = FirebaseStorage.getInstance()

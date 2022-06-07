@@ -13,7 +13,7 @@ import ua.opu.continent.presentation.MainViewModelFactory
 import ua.opu.continent.R
 import ua.opu.continent.presentation.adapter.UserAdapter
 import ua.opu.continent.databinding.FragmentMainBinding
-import ua.opu.continent.useсase.impl.PresenceUseCaseImpl
+import ua.opu.continent.useсase.impl.PresenceUseCaseFirebase
 
 class MainFragment() : Fragment(R.layout.fragment_main) {
 
@@ -55,12 +55,12 @@ class MainFragment() : Fragment(R.layout.fragment_main) {
 
     override fun onResume() {
         super.onResume()
-        viewModel.setUserPresence(PresenceUseCaseImpl.PRESENCE_ONLINE)
+        viewModel.setUserPresence(PresenceUseCaseFirebase.PRESENCE_ONLINE)
     }
 
     override fun onPause() {
         super.onPause()
-        viewModel.setUserPresence(PresenceUseCaseImpl.PRESENCE_OFFLINE)
+        viewModel.setUserPresence(PresenceUseCaseFirebase.PRESENCE_OFFLINE)
     }
 
 

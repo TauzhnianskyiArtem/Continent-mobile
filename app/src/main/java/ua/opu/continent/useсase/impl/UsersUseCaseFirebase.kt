@@ -11,7 +11,7 @@ import ua.opu.continent.database.model.User
 import ua.opu.continent.presentation.dto.UserCreateDto
 import ua.opu.continent.useсase.UsersUseCase
 
-class UsersUseCaseImpl : UsersUseCase {
+class UsersUseCaseFirebase : UsersUseCase {
     private val usersRepository: UsersRepository = UsersRepository()
     private var storage: FirebaseStorage = FirebaseStorage.getInstance()
 

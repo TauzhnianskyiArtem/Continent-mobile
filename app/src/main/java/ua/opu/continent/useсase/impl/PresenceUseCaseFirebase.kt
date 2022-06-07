@@ -4,7 +4,7 @@ import androidx.annotation.WorkerThread
 import ua.opu.continent.database.repository.PresenceRepository
 import ua.opu.continent.useсase.PresenceUseCase
 
-class PresenceUseCaseImpl : PresenceUseCase {
+class PresenceUseCaseFirebase : PresenceUseCase {
     private val presenceRepository: PresenceRepository = PresenceRepository()
 
     @WorkerThread

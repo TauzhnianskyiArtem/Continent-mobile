@@ -30,7 +30,7 @@ import ua.opu.continent.databinding.FragmentChatBinding
 import ua.opu.continent.presentation.dialog.DeleteMessageDialog
 import ua.opu.continent.presentation.dialog.ProgressDialog
 import ua.opu.continent.presentation.dto.MessageCreateDto
-import ua.opu.continent.useсase.impl.PresenceUseCaseImpl
+import ua.opu.continent.useсase.impl.PresenceUseCaseFirebase
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -77,43 +77,15 @@ class ChatFragment() : Fragment(R.layout.fragment_chat) {
 
         (activity as AppCompatActivity?)?.setSupportActionBar(binding.toolbar)
 
+        senderUid = FirebaseAuth.getInstance().uid
 
-        val name = arguments?.getString("name")
-        val profile = arguments?.getString("image")
-        receiverUid = arguments?.getString("uid")
+        initReceiver()
 
-        binding.name.text = name
-        Glide.with(requireActivity()).load(profile)
-            .placeholder(R.drawable.avatar)
-            .into(binding.profile01)
         binding.backImage.setOnClickListener {
             findNavController().popBackStack()
         }
-        senderUid = FirebaseAuth.getInstance().uid
 
-        viewModel.bindToGetReceiverStatus(receiverUid!!) { status ->
-            if (status == "Offline") {
-                binding.status.visibility = View.GONE
-            } else {
-                binding.status.text = status
-                binding.status.visibility = View.VISIBLE
-            }
-        }
-
-        senderRoom = senderUid + receiverUid
-        receiverRoom = receiverUid + senderUid
-        adapter = MessagesAdapter(requireContext()) {
-            val dialogDelete = DeleteMessageDialog.newInstance(
-                it.messageId,
-                senderRoom!!, receiverRoom!!
-            )
-            dialogDelete.show(parentFragmentManager, "delete")
-        }
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
-        adapter.submitList(null)
-
-        viewModel.bindToGetAllMessages(senderRoom!!, adapter)
+        initMessageAdapter()
 
         binding.sendBtn.setOnClickListener {
             val messageTxt: String = binding.messageBox.text.toString()
@@ -130,12 +102,59 @@ class ChatFragment() : Fragment(R.layout.fragment_chat) {
             contentLauncher.launch("image/*")
         }
         binding.camera.setOnClickListener {
-            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+            grantCameraPermission()
         }
         val handler = Handler()
         binding.messageBox.addTextChangedListener(textWatcher(handler))
 
         (activity as AppCompatActivity?)?.supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        binding = FragmentChatBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+
+    private fun initMessageAdapter() {
+        senderRoom = senderUid + receiverUid
+        receiverRoom = receiverUid + senderUid
+        adapter = MessagesAdapter(requireContext()) {
+            val dialogDelete = DeleteMessageDialog.newInstance(
+                it.messageId,
+                senderRoom!!, receiverRoom!!
+            )
+            dialogDelete.show(parentFragmentManager, "delete")
+        }
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
+        adapter.submitList(null)
+
+        viewModel.bindToGetAllMessages(senderRoom!!, adapter)
+    }
+
+    private fun initReceiver() {
+        val name = arguments?.getString("name")
+        val profile = arguments?.getString("image")
+        receiverUid = arguments?.getString("uid")
+
+        binding.name.text = name
+        Glide.with(requireActivity()).load(profile)
+            .placeholder(R.drawable.avatar)
+            .into(binding.profile01)
+
+        viewModel.bindToGetReceiverStatus(receiverUid!!) { status ->
+            if (status == "Offline") {
+                binding.status.visibility = View.GONE
+            } else {
+                binding.status.text = status
+                binding.status.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun textWatcher(handler: Handler) = object : TextWatcher {
@@ -149,25 +168,17 @@ class ChatFragment() : Fragment(R.layout.fragment_chat) {
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
         override fun afterTextChanged(s: Editable) {
-            viewModel.setUserPresence(PresenceUseCaseImpl.PRESENCE_TYPING)
+            viewModel.setUserPresence(PresenceUseCaseFirebase.PRESENCE_TYPING)
             handler.removeCallbacksAndMessages(null)
             handler.postDelayed(userStoppedTyping, 1000)
         }
 
         var userStoppedTyping =
             Runnable {
-                viewModel.setUserPresence(PresenceUseCaseImpl.PRESENCE_ONLINE)
+                viewModel.setUserPresence(PresenceUseCaseFirebase.PRESENCE_ONLINE)
             }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        binding = FragmentChatBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     private fun grantCameraPermission() {
         when (PackageManager.PERMISSION_GRANTED) {
@@ -175,7 +186,7 @@ class ChatFragment() : Fragment(R.layout.fragment_chat) {
                 requireContext(),
                 Manifest.permission.CAMERA
             ) -> {
-                Log.i("TAG", "Camera permissions granted already")
+                Log.d("TAG", "Camera permissions granted already")
             }
             else -> {
                 requestPermissionLauncher.launch(Manifest.permission.CAMERA)
@@ -208,8 +219,6 @@ class ChatFragment() : Fragment(R.layout.fragment_chat) {
 
 
         viewModel.sendMessagePhoto(messageCreateDto)
-        binding.messageBox.setText("")
-        photoURI = null
     }
 
 }
