@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         val currentDestination = navController?.currentDestination
-        if(currentDestination?.id == getChatDestination())
+        if (currentDestination?.id == getChatDestination())
             finish()
         if (isStartDestination(navController?.currentDestination)) {
             super.onBackPressed()
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun isStartDestination(destination: NavDestination?): Boolean {
         if (destination == null) return false
-        if(destination.id == getChatDestination()) return true
+        if (destination.id == getChatDestination()) return true
         val graph = destination.parent ?: return false
         val startDestinations = topLevelDestinations + graph.startDestinationId
         return startDestinations.contains(destination.id)

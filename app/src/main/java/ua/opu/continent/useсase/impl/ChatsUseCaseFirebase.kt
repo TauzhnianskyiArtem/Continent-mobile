@@ -5,16 +5,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import ua.opu.continent.presentation.adapter.MessagesAdapter
-import ua.opu.continent.database.repository.ChatsRepository
 import ua.opu.continent.database.model.Message
+import ua.opu.continent.database.repository.ChatsRepository
+import ua.opu.continent.presentation.adapter.MessagesAdapter
 import ua.opu.continent.presentation.dto.MessageCreateDto
 import ua.opu.continent.useсase.ChatsUseCase
 import java.util.*
 
-class ChatsUseCaseFirebase : ChatsUseCase {
+object ChatsUseCaseFirebase : ChatsUseCase {
 
-    private val chatsRepository: ChatsRepository = ChatsRepository()
+    private val chatsRepository: ChatsRepository = ChatsRepository
     private var storage: FirebaseStorage = FirebaseStorage.getInstance()
 
     @WorkerThread

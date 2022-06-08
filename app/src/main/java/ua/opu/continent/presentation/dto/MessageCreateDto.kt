@@ -26,7 +26,8 @@ data class MessageCreateDto(
         fun onCompleteListener(onCompleteListener: (Task<UploadTask.TaskSnapshot>) -> Unit) =
             apply { this.onCompleteListener = onCompleteListener }
 
-        fun build() = MessageCreateDto(uriPhoto, message, senderRoom, receiverRoom, onCompleteListener)
+        fun build() =
+            MessageCreateDto(uriPhoto, message, senderRoom, receiverRoom, onCompleteListener)
     }
 
 }

@@ -3,7 +3,8 @@ package ua.opu.continent.useсase.logging
 import android.util.Log
 import ua.opu.continent.useсase.PresenceUseCase
 
-class PresenceUserCaseLog(private val originalUserCase: PresenceUseCase, private val tag: String?) : PresenceUseCase {
+class PresenceUserCaseLog(private val originalUserCase: PresenceUseCase, private val tag: String?) :
+    PresenceUseCase {
     override suspend fun setUserPresence(presence: String) {
         Log.d(tag, "Function: setUserPresence")
         originalUserCase.setUserPresence(presence)

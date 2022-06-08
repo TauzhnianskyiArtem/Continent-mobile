@@ -5,7 +5,8 @@ import ua.opu.continent.presentation.adapter.MessagesAdapter
 import ua.opu.continent.presentation.dto.MessageCreateDto
 import ua.opu.continent.useсase.ChatsUseCase
 
-class ChatsUserCaseLog(private val originalUserCase: ChatsUseCase, private val tag: String?) : ChatsUseCase {
+class ChatsUserCaseLog(private val originalUserCase: ChatsUseCase, private val tag: String?) :
+    ChatsUseCase {
 
     override suspend fun bindToGetAllMessages(senderRoom: String, messageAdapter: MessagesAdapter) {
         Log.d(tag, "Function: bindToGetAllMessages, Sender Room: $senderRoom")

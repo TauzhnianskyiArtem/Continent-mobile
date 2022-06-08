@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Continent</string>
     <string name="we_will_send_you_an">We will send you an</string>
-    <string name="desc_app">Ask your any question for Expert and get Solution for your Problem</string>
+    <string name="desc_app">Start chatting with any app user</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="default_progress">Loading…</string>
     <string name="default_verify_phone">Verify +380911111</string>

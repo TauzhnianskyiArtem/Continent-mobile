@@ -5,11 +5,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import ua.opu.continent.presentation.adapter.UserAdapter
 import ua.opu.continent.database.dao.UsersDao
 import ua.opu.continent.database.model.User
+import ua.opu.continent.presentation.adapter.UserAdapter
 
-class UsersDaoFirebase : UsersDao {
+object UsersDaoFirebase : UsersDao {
 
     private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
 

@@ -6,7 +6,10 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import ua.opu.continent.useсase.AuthenticationUseCase
 
-class AuthenticationUserCaseLog(private val originalUserCase: AuthenticationUseCase, private val tag: String?) : AuthenticationUseCase {
+class AuthenticationUserCaseLog(
+    private val originalUserCase: AuthenticationUseCase,
+    private val tag: String?
+) : AuthenticationUseCase {
     override suspend fun sendingCode(
         phoneNumber: String,
         activity: Activity,

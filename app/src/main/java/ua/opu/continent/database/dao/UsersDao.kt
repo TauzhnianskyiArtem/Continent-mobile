@@ -1,7 +1,7 @@
 package ua.opu.continent.database.dao
 
-import ua.opu.continent.presentation.adapter.UserAdapter
 import ua.opu.continent.database.model.User
+import ua.opu.continent.presentation.adapter.UserAdapter
 
 interface UsersDao {
 

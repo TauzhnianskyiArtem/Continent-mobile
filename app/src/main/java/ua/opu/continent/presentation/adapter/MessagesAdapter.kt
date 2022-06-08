@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import ua.opu.continent.R
+import ua.opu.continent.database.model.Message
 import ua.opu.continent.databinding.ReceiveMsgBinding
 import ua.opu.continent.databinding.SendMsgBinding
-import ua.opu.continent.database.model.Message
 
 
 class MessagesAdapter(
@@ -20,7 +20,6 @@ class MessagesAdapter(
     private val onClick: (Message) -> Unit
 ) :
     ListAdapter<Message, RecyclerView.ViewHolder?>(MessageDiffCallback) {
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

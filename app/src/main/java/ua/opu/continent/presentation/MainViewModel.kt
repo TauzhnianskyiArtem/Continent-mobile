@@ -26,12 +26,23 @@ import ua.opu.continent.useсase.logging.PresenceUserCaseLog
 import ua.opu.continent.useсase.logging.UsersUserCaseLog
 
 class MainViewModel() : ViewModel() {
-    private var authUseCaseFirebase: AuthenticationUseCase =
-        AuthenticationUserCaseLog(AuthenticationUseCaseFirebase(), TAG_FOR_LOGS)
-    private var userUseCase: UsersUseCase = UsersUserCaseLog(UsersUseCaseFirebase(), TAG_FOR_LOGS)
-    private var chatsUseCase: ChatsUseCase = ChatsUserCaseLog(ChatsUseCaseFirebase(), TAG_FOR_LOGS)
-    private var presenceUseCase: PresenceUseCase =
-        PresenceUserCaseLog(PresenceUseCaseFirebase(), TAG_FOR_LOGS)
+
+    private lateinit var authUseCaseFirebase: AuthenticationUseCase
+    private lateinit var userUseCase: UsersUseCase
+    private lateinit var chatsUseCase: ChatsUseCase
+    private lateinit var presenceUseCase: PresenceUseCase
+
+    init {
+        initDependency()
+    }
+
+    private fun initDependency() {
+        authUseCaseFirebase = AuthenticationUserCaseLog(AuthenticationUseCaseFirebase, TAG_FOR_LOGS)
+        userUseCase = UsersUserCaseLog(UsersUseCaseFirebase, TAG_FOR_LOGS)
+        chatsUseCase = ChatsUserCaseLog(ChatsUseCaseFirebase, TAG_FOR_LOGS)
+        presenceUseCase = PresenceUserCaseLog(PresenceUseCaseFirebase, TAG_FOR_LOGS)
+    }
+
 
     fun isAuthenticateUser(): Boolean = runBlocking {
         authUseCaseFirebase.isAuthenticateUser()
@@ -89,6 +100,7 @@ class MainViewModel() : ViewModel() {
     companion object {
         val TAG_FOR_LOGS: String? = MainViewModel::class.simpleName
     }
+
 
 }
 

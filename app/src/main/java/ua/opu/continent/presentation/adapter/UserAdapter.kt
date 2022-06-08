@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ua.opu.continent.R
-import ua.opu.continent.databinding.ItemProfileBinding
 import ua.opu.continent.database.model.User
+import ua.opu.continent.databinding.ItemProfileBinding
 
 class UserAdapter(
     private val context: Context,

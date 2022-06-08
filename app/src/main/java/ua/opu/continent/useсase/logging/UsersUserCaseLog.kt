@@ -5,7 +5,8 @@ import ua.opu.continent.presentation.adapter.UserAdapter
 import ua.opu.continent.presentation.dto.UserCreateDto
 import ua.opu.continent.useсase.UsersUseCase
 
-class UsersUserCaseLog(private val originalUserCase: UsersUseCase, private val tag: String?) : UsersUseCase {
+class UsersUserCaseLog(private val originalUserCase: UsersUseCase, private val tag: String?) :
+    UsersUseCase {
 
     override suspend fun bindToGetAllUsers(usersAdapter: UserAdapter) {
         Log.d(tag, "Function: bindToGetAllUsers")

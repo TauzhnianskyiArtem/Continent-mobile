@@ -11,17 +11,21 @@ import com.google.firebase.auth.*
 import ua.opu.continent.useсase.AuthenticationUseCase
 import java.util.concurrent.TimeUnit
 
-class AuthenticationUseCaseFirebase : AuthenticationUseCase {
+object AuthenticationUseCaseFirebase : AuthenticationUseCase {
 
     private val auth = FirebaseAuth.getInstance()
 
     @WorkerThread
-    override suspend fun isAuthenticateUser(): Boolean  {
-            return auth.currentUser != null
+    override suspend fun isAuthenticateUser(): Boolean {
+        return auth.currentUser != null
     }
 
     @WorkerThread
-    override suspend fun sendingCode(phoneNumber: String, activity: Activity, onCodeSent: (String) -> Unit) {
+    override suspend fun sendingCode(
+        phoneNumber: String,
+        activity: Activity,
+        onCodeSent: (String) -> Unit
+    ) {
         val options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber)
             .setTimeout(60L, TimeUnit.SECONDS)
@@ -42,7 +46,8 @@ class AuthenticationUseCaseFirebase : AuthenticationUseCase {
                     forceResendingToken: PhoneAuthProvider.ForceResendingToken
                 ) {
                     super.onCodeSent(verifyId, forceResendingToken)
-                    val imm = activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm =
+                        activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
                     verifyId.let(onCodeSent)
                 }
@@ -54,7 +59,11 @@ class AuthenticationUseCaseFirebase : AuthenticationUseCase {
     }
 
     @WorkerThread
-    override suspend fun verifyCode(verificationId: String, otpCode: String, completeListener: OnCompleteListener<AuthResult>){
+    override suspend fun verifyCode(
+        verificationId: String,
+        otpCode: String,
+        completeListener: OnCompleteListener<AuthResult>
+    ) {
         print(verificationId)
         val credential = PhoneAuthProvider.getCredential(verificationId, otpCode)
         auth.signInWithCredential(credential)

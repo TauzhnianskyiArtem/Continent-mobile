@@ -7,7 +7,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import ua.opu.continent.database.dao.PresenceDao
 
-class PresenceDaoFirebase : PresenceDao {
+object PresenceDaoFirebase : PresenceDao {
 
     private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
     override suspend fun setUserPresence(presence: String) {
@@ -21,7 +21,7 @@ class PresenceDaoFirebase : PresenceDao {
                     if (snapshot.exists()) {
                         val status = snapshot.getValue(String::class.java)
                         if (status!!.isNotEmpty()) {
-                           status.let(getStatus)
+                            status.let(getStatus)
                         }
                     }
                 }

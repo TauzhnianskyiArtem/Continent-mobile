@@ -3,15 +3,15 @@ package ua.opu.continent.database.model
 data class Message(
     var messageId: String? = null,
     var message: String? = null,
-    var senderId: String?= null,
-    var imageUrl: String?= null,
+    var senderId: String? = null,
+    var imageUrl: String? = null,
     var timeStamp: Long = 0
-){
+) {
     data class Builder(
         private var messageId: String? = null,
         private var message: String? = null,
         private var senderId: String? = null,
-        private var imageUrl: String?= null,
+        private var imageUrl: String? = null,
         private var timeStamp: Long = 0
     ) {
 

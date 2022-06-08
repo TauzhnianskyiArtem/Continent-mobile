@@ -1,12 +1,12 @@
 package ua.opu.continent.database.repository
 
-import ua.opu.continent.presentation.adapter.MessagesAdapter
 import ua.opu.continent.database.dao.ChatsDao
 import ua.opu.continent.database.dao.impl.ChatsDaoFirebase
 import ua.opu.continent.database.model.Message
+import ua.opu.continent.presentation.adapter.MessagesAdapter
 
-class ChatsRepository {
-    private val chatsDao: ChatsDao = ChatsDaoFirebase()
+object ChatsRepository {
+    private val chatsDao: ChatsDao = ChatsDaoFirebase
 
     suspend fun bindToGetAllMessages(senderRoom: String, messageAdapter: MessagesAdapter) {
         chatsDao.bindToGetAllMessages(senderRoom, messageAdapter)

@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import ua.opu.continent.R
+import ua.opu.continent.databinding.FragmentMainBinding
 import ua.opu.continent.presentation.MainViewModel
 import ua.opu.continent.presentation.MainViewModelFactory
-import ua.opu.continent.R
 import ua.opu.continent.presentation.adapter.UserAdapter
-import ua.opu.continent.databinding.FragmentMainBinding
 import ua.opu.continent.useсase.impl.PresenceUseCaseFirebase
 
 class MainFragment() : Fragment(R.layout.fragment_main) {
@@ -62,7 +62,6 @@ class MainFragment() : Fragment(R.layout.fragment_main) {
         super.onPause()
         viewModel.setUserPresence(PresenceUseCaseFirebase.PRESENCE_OFFLINE)
     }
-
 
 
 }

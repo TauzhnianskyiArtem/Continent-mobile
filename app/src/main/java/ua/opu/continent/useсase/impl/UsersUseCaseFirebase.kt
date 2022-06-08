@@ -5,14 +5,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import ua.opu.continent.presentation.adapter.UserAdapter
-import ua.opu.continent.database.repository.UsersRepository
 import ua.opu.continent.database.model.User
+import ua.opu.continent.database.repository.UsersRepository
+import ua.opu.continent.presentation.adapter.UserAdapter
 import ua.opu.continent.presentation.dto.UserCreateDto
 import ua.opu.continent.useсase.UsersUseCase
 
-class UsersUseCaseFirebase : UsersUseCase {
-    private val usersRepository: UsersRepository = UsersRepository()
+object UsersUseCaseFirebase : UsersUseCase {
+    private val usersRepository: UsersRepository = UsersRepository
     private var storage: FirebaseStorage = FirebaseStorage.getInstance()
 
     @WorkerThread

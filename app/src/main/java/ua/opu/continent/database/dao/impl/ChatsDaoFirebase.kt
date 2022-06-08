@@ -4,11 +4,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import ua.opu.continent.presentation.adapter.MessagesAdapter
 import ua.opu.continent.database.dao.ChatsDao
 import ua.opu.continent.database.model.Message
+import ua.opu.continent.presentation.adapter.MessagesAdapter
 
-class ChatsDaoFirebase : ChatsDao {
+object ChatsDaoFirebase : ChatsDao {
 
     private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
 

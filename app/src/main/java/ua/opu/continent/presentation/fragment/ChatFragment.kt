@@ -22,11 +22,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import ua.opu.continent.R
+import ua.opu.continent.databinding.FragmentChatBinding
 import ua.opu.continent.presentation.MainViewModel
 import ua.opu.continent.presentation.MainViewModelFactory
-import ua.opu.continent.R
 import ua.opu.continent.presentation.adapter.MessagesAdapter
-import ua.opu.continent.databinding.FragmentChatBinding
 import ua.opu.continent.presentation.dialog.DeleteMessageDialog
 import ua.opu.continent.presentation.dialog.ProgressDialog
 import ua.opu.continent.presentation.dto.MessageCreateDto
