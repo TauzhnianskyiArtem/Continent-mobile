@@ -13,15 +13,17 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import ua.opu.continent.App
 import ua.opu.continent.R
 import ua.opu.continent.databinding.FragmentOtpBinding
 import ua.opu.continent.presentation.MainViewModel
 import ua.opu.continent.presentation.MainViewModelFactory
 import ua.opu.continent.presentation.dialog.ProgressDialog
 import ua.opu.continent.presentation.receiver.SmsReceiver
+import javax.inject.Inject
 
 class OTPFragment() : Fragment(R.layout.fragment_otp), SmsReceiver.SmsReceiverListener {
 
@@ -30,9 +32,9 @@ class OTPFragment() : Fragment(R.layout.fragment_otp), SmsReceiver.SmsReceiverLi
     private var verificationId: String? = null
     private val receiver = SmsReceiver(this)
 
-    private val viewModel: MainViewModel by viewModels {
-        MainViewModelFactory()
-    }
+    @Inject
+    lateinit var viewModelFactory: MainViewModelFactory
+    private lateinit var viewModel: MainViewModel
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -80,6 +82,11 @@ class OTPFragment() : Fragment(R.layout.fragment_otp), SmsReceiver.SmsReceiverLi
 
         val filter = IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION)
         requireActivity().registerReceiver(receiver, filter)
+        (requireActivity().applicationContext as App).appComponent.inject(this)
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+
+
         binding = FragmentOtpBinding.inflate(inflater, container, false)
         return binding.root
     }

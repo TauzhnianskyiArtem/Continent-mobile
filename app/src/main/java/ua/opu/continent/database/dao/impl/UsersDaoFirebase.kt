@@ -7,16 +7,13 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import ua.opu.continent.database.dao.UsersDao
 import ua.opu.continent.database.model.User
-import ua.opu.continent.presentation.adapter.UserAdapter
+import ua.opu.continent.presentation.adapter.UsersAdapter
 
-object UsersDaoFirebase : UsersDao {
+class UsersDaoFirebase(private var database: FirebaseDatabase) : UsersDao {
 
-    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
-
-
-    override suspend fun bindToGetAllUsers(usersAdapter: UserAdapter) {
+    override suspend fun bindToGetAllUsers(usersAdapter: UsersAdapter) {
         val users = ArrayList<User>()
-        database.reference.child("users").addValueEventListener(object : ValueEventListener {
+        database.reference.child(USERS_KEY).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 users.clear()
                 for (snapshot1 in snapshot.children) {
@@ -32,9 +29,13 @@ object UsersDaoFirebase : UsersDao {
 
     override suspend fun saveUser(uid: String, user: User, onSuccessListener: (Void?) -> Unit) {
         database.reference
-            .child("users")
+            .child(USERS_KEY)
             .child(uid)
             .setValue(user)
             .addOnSuccessListener(onSuccessListener)
+    }
+
+    companion object {
+        const val USERS_KEY = "users"
     }
 }

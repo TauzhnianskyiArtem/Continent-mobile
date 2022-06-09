@@ -1,14 +1,12 @@
 package ua.opu.continent.database.repository
 
 import ua.opu.continent.database.dao.UsersDao
-import ua.opu.continent.database.dao.impl.UsersDaoFirebase
 import ua.opu.continent.database.model.User
-import ua.opu.continent.presentation.adapter.UserAdapter
+import ua.opu.continent.presentation.adapter.UsersAdapter
 
-object UsersRepository {
-    private val usersDao: UsersDao = UsersDaoFirebase
+class UsersRepository(private val usersDao: UsersDao) {
 
-    suspend fun bindToGetAllUsers(usersAdapter: UserAdapter) {
+    suspend fun bindToGetAllUsers(usersAdapter: UsersAdapter) {
         usersDao.bindToGetAllUsers(usersAdapter)
     }
 

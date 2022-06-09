@@ -2,24 +2,28 @@ package ua.opu.continent.presentation
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import ua.opu.continent.App
 import ua.opu.continent.R
+import ua.opu.continent.useсase.impl.PresenceUseCaseFirebase
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
 
     private var navController: NavController? = null
 
-    private val viewModel: MainViewModel by viewModels {
-        MainViewModelFactory()
-    }
+    @Inject
+    lateinit var viewModelFactory: MainViewModelFactory
+    private lateinit var viewModel: MainViewModel
+
 
     private val topLevelDestinations = setOf(getChatDestination(), getSignInDestination())
 
@@ -39,6 +43,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        (applicationContext as App).appComponent.inject(this)
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
 
         val navController = getRootNavController()
         prepareRootNavController(isSignedIn(), navController)
@@ -63,6 +70,11 @@ class MainActivity : AppCompatActivity() {
         } else {
             navController?.popBackStack()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.setUserPresence(PresenceUseCaseFirebase.PRESENCE_OFFLINE)
     }
 
     override fun onSupportNavigateUp(): Boolean =

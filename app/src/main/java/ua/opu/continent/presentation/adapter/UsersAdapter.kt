@@ -12,13 +12,13 @@ import ua.opu.continent.R
 import ua.opu.continent.database.model.User
 import ua.opu.continent.databinding.ItemProfileBinding
 
-class UserAdapter(
+class UsersAdapter(
     private val context: Context,
     private val onClick: (User) -> Unit
 ) :
-    ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallback) {
+    ListAdapter<User, UsersAdapter.UserViewHolder>(UserDiffCallback) {
 
-    inner class UserViewHolder(itemView: View, onClick: (User) -> Unit) :
+    inner class UserViewHolder(itemView: View, val onClick: (User) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
         private val binding: ItemProfileBinding = ItemProfileBinding.bind(itemView)
 

@@ -17,11 +17,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import ua.opu.continent.App
 import ua.opu.continent.R
 import ua.opu.continent.databinding.FragmentChatBinding
 import ua.opu.continent.presentation.MainViewModel
@@ -34,6 +35,7 @@ import ua.opu.continent.useсase.impl.PresenceUseCaseFirebase
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 
 class ChatFragment() : Fragment(R.layout.fragment_chat) {
@@ -47,9 +49,9 @@ class ChatFragment() : Fragment(R.layout.fragment_chat) {
     private var receiverUid: String? = null
     private var photoURI: Uri? = null
 
-    private val viewModel: MainViewModel by viewModels {
-        MainViewModelFactory()
-    }
+    @Inject
+    lateinit var viewModelFactory: MainViewModelFactory
+    private lateinit var viewModel: MainViewModel
 
     private val contentLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) {
         if (it != null)
@@ -116,6 +118,9 @@ class ChatFragment() : Fragment(R.layout.fragment_chat) {
     ): View? {
 
         binding = FragmentChatBinding.inflate(inflater, container, false)
+        (requireActivity().applicationContext as App).appComponent.inject(this)
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
         return binding.root
     }
 
@@ -219,6 +224,16 @@ class ChatFragment() : Fragment(R.layout.fragment_chat) {
 
 
         viewModel.sendMessagePhoto(messageCreateDto)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.setUserPresence(PresenceUseCaseFirebase.PRESENCE_ONLINE)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.setUserPresence(PresenceUseCaseFirebase.PRESENCE_OFFLINE)
     }
 
 }

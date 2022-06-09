@@ -57,7 +57,7 @@ class MessagesAdapter(
 
     inner class SentViewHolder(itemView: View, val onClick: (Message) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
-        var binding = SendMsgBinding.bind(itemView)
+        private val binding = SendMsgBinding.bind(itemView)
 
         fun bind(message: Message) {
             if (message.message.equals("photo")) {

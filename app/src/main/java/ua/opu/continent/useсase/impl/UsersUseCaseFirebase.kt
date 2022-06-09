@@ -7,16 +7,17 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import ua.opu.continent.database.model.User
 import ua.opu.continent.database.repository.UsersRepository
-import ua.opu.continent.presentation.adapter.UserAdapter
+import ua.opu.continent.presentation.adapter.UsersAdapter
 import ua.opu.continent.presentation.dto.UserCreateDto
 import ua.opu.continent.useсase.UsersUseCase
 
-object UsersUseCaseFirebase : UsersUseCase {
-    private val usersRepository: UsersRepository = UsersRepository
-    private var storage: FirebaseStorage = FirebaseStorage.getInstance()
+class UsersUseCaseFirebase(
+    private val usersRepository: UsersRepository,
+    private val storage: FirebaseStorage
+) : UsersUseCase {
 
     @WorkerThread
-    override suspend fun bindToGetAllUsers(usersAdapter: UserAdapter) {
+    override suspend fun bindToGetAllUsers(usersAdapter: UsersAdapter) {
         usersRepository.bindToGetAllUsers(usersAdapter)
     }
 
@@ -43,7 +44,7 @@ object UsersUseCaseFirebase : UsersUseCase {
             return
         }
 
-        val reference = storage.reference.child("Profiles").child(uid)
+        val reference = storage.reference.child(PROFILES_FOLDER).child(uid)
 
         reference.putFile(selectedImage).addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -55,6 +56,9 @@ object UsersUseCaseFirebase : UsersUseCase {
                 }
             }
         }
+    }
 
+    companion object {
+        const val PROFILES_FOLDER = "Profiles"
     }
 }

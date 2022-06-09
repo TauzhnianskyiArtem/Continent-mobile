@@ -9,43 +9,24 @@ import com.google.firebase.auth.AuthResult
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ua.opu.continent.presentation.adapter.MessagesAdapter
-import ua.opu.continent.presentation.adapter.UserAdapter
+import ua.opu.continent.presentation.adapter.UsersAdapter
 import ua.opu.continent.presentation.dto.MessageCreateDto
 import ua.opu.continent.presentation.dto.UserCreateDto
 import ua.opu.continent.useсase.AuthenticationUseCase
 import ua.opu.continent.useсase.ChatsUseCase
 import ua.opu.continent.useсase.PresenceUseCase
 import ua.opu.continent.useсase.UsersUseCase
-import ua.opu.continent.useсase.impl.AuthenticationUseCaseFirebase
-import ua.opu.continent.useсase.impl.ChatsUseCaseFirebase
-import ua.opu.continent.useсase.impl.PresenceUseCaseFirebase
-import ua.opu.continent.useсase.impl.UsersUseCaseFirebase
-import ua.opu.continent.useсase.logging.AuthenticationUserCaseLog
-import ua.opu.continent.useсase.logging.ChatsUserCaseLog
-import ua.opu.continent.useсase.logging.PresenceUserCaseLog
-import ua.opu.continent.useсase.logging.UsersUserCaseLog
 
-class MainViewModel() : ViewModel() {
-
-    private lateinit var authUseCaseFirebase: AuthenticationUseCase
-    private lateinit var userUseCase: UsersUseCase
-    private lateinit var chatsUseCase: ChatsUseCase
-    private lateinit var presenceUseCase: PresenceUseCase
-
-    init {
-        initDependency()
-    }
-
-    private fun initDependency() {
-        authUseCaseFirebase = AuthenticationUserCaseLog(AuthenticationUseCaseFirebase, TAG_FOR_LOGS)
-        userUseCase = UsersUserCaseLog(UsersUseCaseFirebase, TAG_FOR_LOGS)
-        chatsUseCase = ChatsUserCaseLog(ChatsUseCaseFirebase, TAG_FOR_LOGS)
-        presenceUseCase = PresenceUserCaseLog(PresenceUseCaseFirebase, TAG_FOR_LOGS)
-    }
+class MainViewModel(
+    private val authUseCase: AuthenticationUseCase,
+    private val userUseCase: UsersUseCase,
+    private val chatsUseCase: ChatsUseCase,
+    private val presenceUseCase: PresenceUseCase
+) : ViewModel() {
 
 
     fun isAuthenticateUser(): Boolean = runBlocking {
-        authUseCaseFirebase.isAuthenticateUser()
+        authUseCase.isAuthenticateUser()
     }
 
     fun sendingCode(
@@ -53,7 +34,7 @@ class MainViewModel() : ViewModel() {
         requireActivity: FragmentActivity,
         onCodeSent: (String) -> Unit
     ) = viewModelScope.launch {
-        authUseCaseFirebase.sendingCode(phoneNumber, requireActivity, onCodeSent)
+        authUseCase.sendingCode(phoneNumber, requireActivity, onCodeSent)
     }
 
     fun verifyCode(
@@ -61,10 +42,10 @@ class MainViewModel() : ViewModel() {
         otpCode: String,
         completeListener: OnCompleteListener<AuthResult>
     ) = viewModelScope.launch {
-        authUseCaseFirebase.verifyCode(verificationId, otpCode, completeListener)
+        authUseCase.verifyCode(verificationId, otpCode, completeListener)
     }
 
-    fun bindToGetAllUsers(usersAdapter: UserAdapter) = viewModelScope.launch {
+    fun bindToGetAllUsers(usersAdapter: UsersAdapter) = viewModelScope.launch {
         userUseCase.bindToGetAllUsers(usersAdapter)
     }
 
@@ -104,12 +85,17 @@ class MainViewModel() : ViewModel() {
 
 }
 
-class MainViewModelFactory() : ViewModelProvider.Factory {
+class MainViewModelFactory(
+    private val authUseCase: AuthenticationUseCase,
+    private val userUseCase: UsersUseCase,
+    private val chatsUseCase: ChatsUseCase,
+    private val presenceUseCase: PresenceUseCase
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return MainViewModel() as T
+            return MainViewModel(authUseCase, userUseCase, chatsUseCase, presenceUseCase) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class")

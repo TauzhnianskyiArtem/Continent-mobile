@@ -1,10 +1,8 @@
 package ua.opu.continent.database.repository
 
 import ua.opu.continent.database.dao.PresenceDao
-import ua.opu.continent.database.dao.impl.PresenceDaoFirebase
 
-object PresenceRepository {
-    private val presenceDao: PresenceDao = PresenceDaoFirebase
+class PresenceRepository(private val presenceDao: PresenceDao) {
 
     suspend fun setUserPresence(presence: String) {
         presenceDao.setUserPresence(presence)

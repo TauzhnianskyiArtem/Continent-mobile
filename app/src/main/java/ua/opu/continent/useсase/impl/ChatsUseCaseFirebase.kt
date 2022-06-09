@@ -12,10 +12,10 @@ import ua.opu.continent.presentation.dto.MessageCreateDto
 import ua.opu.continent.useсase.ChatsUseCase
 import java.util.*
 
-object ChatsUseCaseFirebase : ChatsUseCase {
-
-    private val chatsRepository: ChatsRepository = ChatsRepository
-    private var storage: FirebaseStorage = FirebaseStorage.getInstance()
+class ChatsUseCaseFirebase(
+    private val chatsRepository: ChatsRepository,
+    private var storage: FirebaseStorage
+) : ChatsUseCase {
 
     @WorkerThread
     override suspend fun bindToGetAllMessages(senderRoom: String, messageAdapter: MessagesAdapter) {
@@ -42,6 +42,7 @@ object ChatsUseCaseFirebase : ChatsUseCase {
         )
     }
 
+
     @WorkerThread
     override suspend fun sendMessagePhoto(
         messageCreateDto: MessageCreateDto
@@ -49,7 +50,7 @@ object ChatsUseCaseFirebase : ChatsUseCase {
         val senderUid = FirebaseAuth.getInstance().uid
 
         val calendar = Calendar.getInstance()
-        val reference = storage.reference.child("chats")
+        val reference = storage.reference.child(CHATS_FOLDER)
             .child(calendar.timeInMillis.toString())
         reference.putFile(messageCreateDto.uriPhoto!!).addOnCompleteListener { task ->
             task.let(messageCreateDto.onCompleteListener)
@@ -79,5 +80,9 @@ object ChatsUseCaseFirebase : ChatsUseCase {
                 }
             }
         }
+    }
+
+    companion object {
+        const val CHATS_FOLDER = "chats"
     }
 }

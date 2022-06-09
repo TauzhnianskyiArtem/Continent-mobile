@@ -11,9 +11,8 @@ import com.google.firebase.auth.*
 import ua.opu.continent.useсase.AuthenticationUseCase
 import java.util.concurrent.TimeUnit
 
-object AuthenticationUseCaseFirebase : AuthenticationUseCase {
+class AuthenticationUseCaseFirebase(private val auth: FirebaseAuth) : AuthenticationUseCase {
 
-    private val auth = FirebaseAuth.getInstance()
 
     @WorkerThread
     override suspend fun isAuthenticateUser(): Boolean {

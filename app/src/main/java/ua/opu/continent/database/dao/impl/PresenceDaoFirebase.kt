@@ -7,15 +7,14 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import ua.opu.continent.database.dao.PresenceDao
 
-object PresenceDaoFirebase : PresenceDao {
+class PresenceDaoFirebase(private var database: FirebaseDatabase) : PresenceDao {
 
-    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
     override suspend fun setUserPresence(presence: String) {
-        database.reference.child("presence").child(getCurrentId()).setValue(presence)
+        database.reference.child(PRESENCE_KEY).child(getCurrentId()).setValue(presence)
     }
 
     override suspend fun bindToGetReceiverStatus(receiverUid: String, getStatus: (String) -> Unit) {
-        database.reference.child("presence").child(receiverUid)
+        database.reference.child(PRESENCE_KEY).child(receiverUid)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
@@ -33,5 +32,9 @@ object PresenceDaoFirebase : PresenceDao {
     private fun getCurrentId(): String {
         val currentId = FirebaseAuth.getInstance().uid
         return currentId!!
+    }
+
+    companion object {
+        const val PRESENCE_KEY = "presence"
     }
 }

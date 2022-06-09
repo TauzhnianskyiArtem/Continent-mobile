@@ -8,17 +8,15 @@ import ua.opu.continent.database.dao.ChatsDao
 import ua.opu.continent.database.model.Message
 import ua.opu.continent.presentation.adapter.MessagesAdapter
 
-object ChatsDaoFirebase : ChatsDao {
-
-    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+class ChatsDaoFirebase(private var database: FirebaseDatabase) : ChatsDao {
 
 
     override suspend fun bindToGetAllMessages(senderRoom: String, messageAdapter: MessagesAdapter) {
 
         val messages = ArrayList<Message>()
-        database.reference.child("chats")
+        database.reference.child(CHATS_KEY)
             .child(senderRoom)
-            .child("messages")
+            .child(MESSAGES_KEY)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     messages.clear()
@@ -41,18 +39,23 @@ object ChatsDaoFirebase : ChatsDao {
         message: Message
     ) {
         val randomKey = database.reference.push().key
-        database.reference.child("chats").child(senderRoom).updateChildren(lastMsgObj)
-        database.reference.child("chats").child(receiverRoom).updateChildren(lastMsgObj)
-        database.reference.child("chats")
+        database.reference.child(CHATS_KEY).child(senderRoom).updateChildren(lastMsgObj)
+        database.reference.child(CHATS_KEY).child(receiverRoom).updateChildren(lastMsgObj)
+        database.reference.child(CHATS_KEY)
             .child(senderRoom)
-            .child("messages")
+            .child(MESSAGES_KEY)
             .child(randomKey!!)
             .setValue(message).addOnSuccessListener {
-                database.reference.child("chats")
+                database.reference.child(CHATS_KEY)
                     .child(receiverRoom)
-                    .child("messages")
+                    .child(MESSAGES_KEY)
                     .child(randomKey)
                     .setValue(message).addOnSuccessListener { }
             }
+    }
+
+    companion object {
+        const val CHATS_KEY = "chats"
+        const val MESSAGES_KEY = "messages"
     }
 }
